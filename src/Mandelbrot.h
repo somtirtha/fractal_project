@@ -1,7 +1,7 @@
 #ifndef BITMAP_H_
 #define BITMAP_H_
 
-namespace designFractal {
+namespace fractalDesign {
 
 class Mandelbrot {
 public:

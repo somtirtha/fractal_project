@@ -23,11 +23,11 @@ int main() {
     		double yFractal = (y - HEIGHT/2)*2.0/HEIGHT;
 
             int iterations = Mandelbrot::getIterations(xFractal, yFractal);
-      //       uint8_t red = (uint8_t)(256*(double)iterations/Mandelbrot::MAX_ITERATIONS);
+            uint8_t red = (uint8_t)(256*(double)iterations/Mandelbrot::MAX_ITERATIONS);
 
-      //       bitmap.setPixel(x, y, red, 0, 0);
-    		// if(red < min) min = red;
-    		// if(red > max) max = red;
+            bitmap.setPixel(x, y, red, 0, 0);
+    		if(red < min) min = red;
+    		if(red > max) max = red;
     	}	
     }
     bitmap.write("images/test.bmp");

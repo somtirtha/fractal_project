@@ -1,17 +1,17 @@
-#ifndef BITMAP_H_
-#define BITMAP_H_
+#ifndef MANDELBROT_H_
+#define MANDELBROT_H_
 
 namespace fractalDesign {
 
 class Mandelbrot {
 public:
 	static const int MAX_ITERATIONS = 100;
-	
+
 public:
 	Mandelbrot();
 	virtual ~Mandelbrot();
 
-	static int getIteratons(double x, double y);
+	static int getIterations(double x, double y);
 };
 
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdint>
 #include <memory>
+#include <cmath>
 #include "BitMapFileHeader.h"
 #include "BitMapInfoHeader.h"
 #include "BitMap.h"
@@ -20,16 +21,16 @@ int main() {
 	unique_ptr<int[]> histogram(new int[Mandelbrot::MAX_ITERATIONS] { 0 });
 	unique_ptr<int[]> fractal(new int[WIDTH * HEIGHT] { 0 });
 
-	// contruct the histogram
+	// get Mandelbrot iterations and construct the histogram
 	for (int y = 0; y < HEIGHT; ++y) {
 		for (int x = 0; x < WIDTH; ++x) {
-			double xFractal = (x - WIDTH / 2 - 200) * 2.0 / HEIGHT; // scaling by same factor on both axes to prevent the Mandelbrot fractal from stretching.
+			double xFractal = (x - WIDTH / 2 - 220) * 2.0 / HEIGHT; // scaling by same factor on both axes to prevent the Mandelbrot fractal from stretching.
 			double yFractal = (y - HEIGHT / 2) * 2.0 / HEIGHT;
 
 			int iterations = Mandelbrot::getIterations(xFractal, yFractal);
 			fractal[y * WIDTH + x] = iterations;
 			/* getting rid of the iterations = MAX_ITERATIONS as histogram[MAX_ITERATIONS]
-				is large and it introduces a lot of noise in the image. */
+			 is large and it introduces a lot of noise in the image. */
 			if (iterations != Mandelbrot::MAX_ITERATIONS) {
 				histogram[iterations]++;
 			}
@@ -39,7 +40,7 @@ int main() {
 
 	// get the total number of iterations
 	int total = 0;
-	for (int i=0; i < Mandelbrot::MAX_ITERATIONS; ++i) {
+	for (int i = 0; i < Mandelbrot::MAX_ITERATIONS; ++i) {
 		total += histogram[i];
 	}
 
@@ -47,17 +48,20 @@ int main() {
 	for (int y = 0; y < HEIGHT; ++y) {
 		for (int x = 0; x < WIDTH; ++x) {
 
-			int iterations = fractal[y *  WIDTH + x];
+			uint8_t red = 0;
+			uint8_t green = 0;
+			uint8_t blue = 0;
 
-			double hue=0.0;
-			for(int i=0; i < iterations; ++i) {
-				hue += (double)histogram[i]/total;
+			int iterations = fractal[y * WIDTH + x];
+
+			if (iterations != Mandelbrot::MAX_ITERATIONS) {
+				double hue = 0.0;
+				for (int i = 0; i < iterations; ++i) {
+					hue += (double) histogram[i] / total;
+				}
+
+				green = pow(255, hue);
 			}
-
-			uint8_t red=0;
-			uint8_t green=hue*255;
-			uint8_t blue=0;
-
 
 			bitmap.setPixel(x, y, red, green, blue);
 //			if (color < min)

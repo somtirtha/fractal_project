@@ -6,6 +6,7 @@
 #include "BitMapInfoHeader.h"
 #include "BitMap.h"
 #include "Mandelbrot.h"
+#include "ZoomList.h"
 
 using namespace std;
 using namespace fractalDesign;
